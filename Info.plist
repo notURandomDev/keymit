@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>KeyLog</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.user.KeyLog</string>
+    <key>CFBundleName</key>
+    <string>KeyLog</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>zh-Hans</string>
+    </array>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon.icns</string>
+    <key>LSUIElement</key>
+    <true/> <!-- 这是一个纯菜单栏应用，不在 Dock 显示 -->
+    <key>NSHighResolutionCapable</key>
+    <true/>
+</dict>
+</plist>

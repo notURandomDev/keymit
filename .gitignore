@@ -1,0 +1,35 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Build outputs
+KeyLog.app/
+build/
+dist/
+out/
+
+# Swift / Xcode / SwiftPM
+.build/
+DerivedData/
+
+# Logs
+*.log
+
+# Editors / IDE
+.vscode/
+.idea/
+.trae/
+*.code-workspace
+
+# Temp files
+*.tmp
+*.swp
+*~
+
+# Sandbox-generated app icon in repo root
+/AppIcon.icns
