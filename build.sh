@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME="KeyLog"
-SOURCES="Sources/App.swift Sources/KeyTracker.swift Sources/DashboardView.swift Sources/HeatmapView.swift Sources/SettingsView.swift Sources/SettingsWindowManager.swift Sources/AppPreferences.swift Sources/RestartHelper.swift"
+SOURCES="Sources/App.swift Sources/KeyTracker.swift Sources/DashboardView.swift Sources/HeatmapView.swift Sources/SettingsView.swift Sources/SettingsWindowManager.swift Sources/AppPreferences.swift Sources/RestartHelper.swift Sources/LaunchManager.swift"
 
 echo "🚧 Cleaning up..."
 rm -rf "$APP_NAME.app"

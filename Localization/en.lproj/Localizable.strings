@@ -24,6 +24,7 @@
 "section_typing_behavior" = "Typing behavior";
 "toggle_decrement_backspace" = "Subtract on Backspace";
 "desc_decrement_backspace" = "When enabled, pressing Backspace decreases total and per-app counts (never below 0).";
+"toggle_launch_at_login" = "Launch at login";
 
 "label_activity" = "Activity";
 "label_applications" = "Applications";

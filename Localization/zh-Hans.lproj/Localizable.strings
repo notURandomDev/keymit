@@ -24,6 +24,7 @@
 "section_typing_behavior" = "输入行为";
 "toggle_decrement_backspace" = "Backspace 删减统计";
 "desc_decrement_backspace" = "开启后，按下 Backspace 会减少总数和对应应用的计数（不小于 0）。";
+"toggle_launch_at_login" = "开机自启动";
 
 "label_activity" = "活跃度";
 "label_applications" = "应用分布";

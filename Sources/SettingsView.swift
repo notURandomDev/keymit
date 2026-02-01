@@ -16,6 +16,7 @@ struct SettingsView: View {
                     Text(LocalizedStringKey("lang_en")).tag("en")
                     Text(LocalizedStringKey("lang_zh_hans")).tag("zh-Hans")
                 }
+                Toggle(LocalizedStringKey("toggle_launch_at_login"), isOn: $prefs.launchAtLogin)
             } header: {
                 Label("General", systemImage: "gearshape")
             }
