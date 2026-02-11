@@ -4,6 +4,30 @@
 
 keycount is a macOS menu bar application that tracks daily keystroke counts and displays distribution by application. The project supports both Chinese and English localization with a native glass-morphism interface style.
 
+## Quick Start
+
+### Build from Source
+
+```bash
+# Build the application
+./build.sh
+
+# Launch the app
+open keycount.app
+```
+
+### Permissions
+
+First run requires authorization in **System Settings → Privacy & Security → Accessibility**. After rebuilding (path or signature changes), re-authorization may be required.
+
+### Icon Configuration
+
+Provide one of the following under the `Assets` directory:
+
+- `AppIcon.icns`
+- `AppIcon.iconset`
+- `AppIcon.png` (1024x1024)
+
 ## Features
 
 - Menu bar window showing total keystrokes and app distribution
@@ -90,19 +114,6 @@ keycount is a macOS menu bar application that tracks daily keystroke counts and 
   - Chinese (Simplified): [zh-Hans.lproj/Localizable.strings](Localization/zh-Hans.lproj/Localizable.strings)
 - **Icon Assets**:
   - Documentation: [Assets/README.md](Assets/README.md)
-
-## Permissions & Signing
-
-- First run requires authorization in System Settings → Privacy & Security → Accessibility
-- After rebuilding (path or signature changes), re-authorization may be required; script uses ad-hoc signing to improve recognition consistency
-
-## Development & Build
-
-- **Build**:
-  - Run `./build.sh` to generate `keycount.app`
-  - Run `open keycount.app` to launch the app
-- **Icon configuration**: Provide `AppIcon.icns` or `AppIcon.iconset` or `AppIcon.png(1024x1024)` under `Assets`
-- **Localization**: Maintain multi-language strings in the `Localization` directory
 
 ## Localization & Language Switching
 
