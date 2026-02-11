@@ -8,7 +8,7 @@ Icon?
 .Trashes
 
 # Build outputs
-KeyLog.app/
+keycount.app/
 build/
 dist/
 out/

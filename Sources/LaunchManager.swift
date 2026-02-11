@@ -2,7 +2,7 @@ import Foundation
 import ServiceManagement
 
 class LaunchManager {
-    private static let bundleIdentifier = "com.user.KeyLog"
+    private static let bundleIdentifier = "com.user.keycount"
     
     static func isLaunchAtLoginEnabled() -> Bool {
         if #available(macOS 13.0, *) {

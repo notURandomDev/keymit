@@ -1,6 +1,6 @@
-# KeyLog
+# keycount
 
-KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，并按应用维度展示分布。项目同时支持中英文本地化，并遵循原生玻璃材质的界面风格。
+keycount 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，并按应用维度展示分布。项目同时支持中英文本地化，并遵循原生玻璃材质的界面风格。
 
 ## 功能特性
 
@@ -21,7 +21,6 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
 ## 模块说明
 
 - KeyTracker（核心逻辑）
-
   - 文件：[KeyTracker.swift](Sources/KeyTracker.swift)
   - 职责：
     - 创建 CGEventTap 捕获全局按键，处理在主 RunLoop 中
@@ -33,7 +32,6 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
     - 持久化：UserDefaults 存储总数与分布；引入脏标记、定时器与计数器进行节流（100 次或每 2 秒保存），退出时强制保存
 
 - DashboardView（仪表盘）
-
   - 文件：[DashboardView.swift](Sources/DashboardView.swift)
   - 职责：
     - 展示今日敲击总数与应用列表（进度条显示占比）
@@ -41,7 +39,6 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
     - 使用原生玻璃背景：根视图使用 underWindowBackground，列表项使用 contentBackground
 
 - SettingsView（设置页）
-
   - 文件：[SettingsView.swift](Sources/SettingsView.swift)
   - 职责：
     - 切换语言（跟随系统/英文/中文简体）；选择后先弹窗说明需重启，取消不应用，确认写入并重启
@@ -49,14 +46,12 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
     - 使用原生玻璃背景
 
 - SettingsWindowManager（设置窗口管理）
-
   - 文件：[SettingsWindowManager.swift](Sources/SettingsWindowManager.swift)
   - 职责：
     - 以 NSWindow 实现单实例设置窗口，避免多开
     - 注入语言环境与标题本地化；语言变更后更新窗口标题
 
 - App 入口与场景
-
   - 文件：[App.swift](Sources/App.swift)
   - 职责：
     - 使用 MenuBarExtra 的 window 风格提供仪表盘窗口
@@ -64,14 +59,12 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
     - 在菜单栏标签中实时显示总敲击数
 
 - 偏好与重启
-
   - AppPreferences：[AppPreferences.swift](Sources/AppPreferences.swift)
     - 存储语言选择（\_system/en/zh-Hans），提供 SwiftUI locale 环境
   - RestartHelper：[RestartHelper.swift](Sources/RestartHelper.swift)
     - 通过 open 重新拉起应用并优雅退出当前进程
 
 - 原生玻璃材质封装
-
   - GlassBackground：[GlassBackground.swift](Sources/GlassBackground.swift)
     - 将 NSVisualEffectView 封装为 SwiftUI 背景，可配置 material 和 blendingMode
 
@@ -96,8 +89,8 @@ KeyLog 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，
 ## 开发与构建
 
 - 构建：
-  - 运行 `./build.sh` 生成 `KeyLog.app`
-  - 运行 `open KeyLog.app` 打开应用
+  - 运行 `./build.sh` 生成 `keycount.app`
+  - 运行 `open keycount.app` 打开应用
 - 图标配置：在 `Assets` 下提供 `AppIcon.icns` 或 `AppIcon.iconset` 或 `AppIcon.png(1024x1024)`
 - 本地化：在 `Localization` 目录中维护多语言文案
 

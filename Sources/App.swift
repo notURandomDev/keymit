@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct KeyLogApp: App {
+struct KeyCountApp: App {
     @StateObject private var prefs = AppPreferences()
     @StateObject private var tracker: KeyTracker
     
