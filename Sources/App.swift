@@ -1,11 +1,11 @@
 import SwiftUI
 
 // MARK: - File Description
-// Main application entry point for the KeyCount app.
+// Main application entry point for the KeyCadence app.
 // Configures the menu bar extra, dashboard view, and settings scene.
 
 @main
-struct KeyCountApp: App {
+struct KeyCadenceApp: App {
     @StateObject private var prefs = AppPreferences()
     @StateObject private var tracker: KeyTracker
     

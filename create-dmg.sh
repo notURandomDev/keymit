@@ -1,8 +1,8 @@
 #!/bin/bash
 
-APP_NAME="keycount"
-DMG_NAME="keycount"
-VOLUME_NAME="KeyCount"
+APP_NAME="KeyCadence"
+DMG_NAME="KeyCadence"
+VOLUME_NAME="KeyCadence"
 
 echo "🔨 Building app..."
 ./build.sh

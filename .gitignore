@@ -8,7 +8,7 @@ Icon?
 .Trashes
 
 # Build outputs
-keycount.app/
+KeyCadence.app/
 build/
 dist/
 out/

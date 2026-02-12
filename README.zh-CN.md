@@ -1,8 +1,8 @@
-# keycount
+# KeyCadence
 
 [English](README.md) | **[简体中文](README.zh-CN.md)**
 
-keycount 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，并按应用维度展示分布。项目同时支持中英文本地化，并遵循原生玻璃材质的界面风格。
+KeyCadence 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，并按应用维度展示分布。项目同时支持中英文本地化，并遵循原生玻璃材质的界面风格。
 
 ## 快速开始
 
@@ -13,7 +13,7 @@ keycount 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数�
 ./build.sh
 
 # 启动应用
-open keycount.app
+open KeyCadence.app
 ```
 
 ### 权限设置

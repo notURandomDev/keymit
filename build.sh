@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_NAME="keycount"
+APP_NAME="KeyCadence"
 SOURCES="Sources/App.swift Sources/KeyTracker.swift Sources/DashboardView.swift Sources/HeatmapView.swift Sources/SettingsView.swift Sources/SettingsWindowManager.swift Sources/AppPreferences.swift Sources/RestartHelper.swift Sources/LaunchManager.swift"
 
 echo "🚧 Cleaning up..."

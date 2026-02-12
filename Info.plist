@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>keycount</string>
+    <string>KeyCadence</string>
     <key>CFBundleIdentifier</key>
-    <string>com.user.keycount</string>
+    <string>com.user.KeyCadence</string>
     <key>CFBundleName</key>
-    <string>keycount</string>
+    <string>KeyCadence</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleLocalizations</key>

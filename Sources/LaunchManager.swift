@@ -6,7 +6,7 @@ import ServiceManagement
 // Provides methods to check and set the launch at login status across different macOS versions.
 
 class LaunchManager {
-    private static let bundleIdentifier = "com.user.keycount"
+    private static let bundleIdentifier = "com.user.KeyCadence"
     
     static func isLaunchAtLoginEnabled() -> Bool {
         if #available(macOS 13.0, *) {

@@ -1,8 +1,8 @@
-# keycount
+# KeyCadence
 
 **[English](README.md)** | [简体中文](README.zh-CN.md)
 
-keycount is a macOS menu bar application that tracks daily keystroke counts and displays distribution by application. The project supports both Chinese and English localization with a native glass-morphism interface style.
+KeyCadence is a macOS menu bar application that tracks daily keystroke counts and displays distribution by application. The project supports both Chinese and English localization with a native glass-morphism interface style.
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ keycount is a macOS menu bar application that tracks daily keystroke counts and 
 ./build.sh
 
 # Launch the app
-open keycount.app
+open KeyCadence.app
 ```
 
 ### Permissions
