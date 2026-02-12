@@ -1,5 +1,9 @@
 import AppKit
 
+// MARK: - File Description
+// Provides functionality to relaunch the application.
+// Used when language changes or other settings require a restart.
+
 enum RestartHelper {
     static func relaunch() {
         let appPath = Bundle.main.bundlePath

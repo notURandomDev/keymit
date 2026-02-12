@@ -1,6 +1,10 @@
 import Foundation
 import SwiftUI
 
+// MARK: - File Description
+// Manages application-wide preferences and settings.
+// Handles language, tracking behavior, and launch at login options with persistence.
+
 class AppPreferences: ObservableObject {
     @Published var language: String {
         didSet {

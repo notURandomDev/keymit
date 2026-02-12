@@ -2,7 +2,10 @@ import SwiftUI
 import AppKit
 import Combine
 
-// Manages a single-instance settings window backed by NSWindow
+// MARK: - File Description
+// Manages the settings window lifecycle and behavior.
+// Handles window creation, localization updates, and cleanup.
+
 class SettingsWindowManager: NSObject, NSWindowDelegate {
     static let shared = SettingsWindowManager()
     private var window: NSWindow?

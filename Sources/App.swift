@@ -1,5 +1,9 @@
 import SwiftUI
 
+// MARK: - File Description
+// Main application entry point for the KeyCount app.
+// Configures the menu bar extra, dashboard view, and settings scene.
+
 @main
 struct KeyCountApp: App {
     @StateObject private var prefs = AppPreferences()

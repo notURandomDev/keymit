@@ -1,7 +1,9 @@
 import SwiftUI
 import AppKit
 
-// MARK: - Dashboard View
+// MARK: - File Description
+// Main dashboard interface displaying keystroke statistics.
+// Shows total counts, activity heatmap, and per-application breakdown.
 
 struct DashboardView: View {
     @ObservedObject var tracker: KeyTracker

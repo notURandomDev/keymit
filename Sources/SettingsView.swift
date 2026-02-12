@@ -1,5 +1,9 @@
 import SwiftUI
 
+// MARK: - File Description
+// Provides the user interface for application settings.
+// Includes language selection, tracking preferences, data management, and version information.
+
 struct SettingsView: View {
     @ObservedObject var tracker: KeyTracker
     @EnvironmentObject var prefs: AppPreferences

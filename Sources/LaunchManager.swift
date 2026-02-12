@@ -1,6 +1,10 @@
 import Foundation
 import ServiceManagement
 
+// MARK: - File Description
+// Manages the application's launch at login behavior.
+// Provides methods to check and set the launch at login status across different macOS versions.
+
 class LaunchManager {
     private static let bundleIdentifier = "com.user.keycount"
     

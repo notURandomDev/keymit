@@ -1,5 +1,9 @@
 import SwiftUI
 
+// MARK: - File Description
+// Displays a GitHub-style heatmap visualization of keystroke activity.
+// Shows daily activity patterns with year navigation and interactive date selection.
+
 struct HeatmapView: View {
     @ObservedObject var tracker: KeyTracker
     @Binding var selectedDate: Date

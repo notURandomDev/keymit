@@ -2,7 +2,9 @@ import SwiftUI
 import ApplicationServices
 import Cocoa
 
-// MARK: - Models
+// MARK: - File Description
+// Core tracking logic for global keystroke monitoring.
+// Captures keyboard events, aggregates per-application statistics, and manages data persistence.
 
 struct DailyStats: Codable, Identifiable {
     var id: String { date }
@@ -10,9 +12,6 @@ struct DailyStats: Codable, Identifiable {
     var totalKeystrokes: Int
     var appBreakdown: [String: Int]
 }
-
-// MARK: - KeyTracker (Core Logic)
-// Tracks global keystrokes, aggregates per-app stats, and persists data.
 
 class KeyTracker: ObservableObject {
     private let prefs: AppPreferences
