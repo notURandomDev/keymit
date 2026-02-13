@@ -1,7 +1,6 @@
 #!/bin/bash
 
 APP_NAME="KeyCadence"
-SOURCES="Sources/App.swift Sources/KeyTracker.swift Sources/DashboardView.swift Sources/HeatmapView.swift Sources/SettingsView.swift Sources/SettingsWindowManager.swift Sources/AppPreferences.swift Sources/RestartHelper.swift Sources/LaunchManager.swift"
 
 echo "🚧 Cleaning up..."
 rm -rf "$APP_NAME.app"
@@ -29,6 +28,10 @@ if [ -d "Localization" ]; then
 fi
 
 echo "🔨 Compiling Swift Sources for Universal Binary..."
+
+SOURCES=$(find Sources -name "*.swift" | sort)
+echo "🔍 Found Swift files:"
+echo "$SOURCES"
 
 # Build for Apple Silicon (arm64)
 echo "  📦 Building arm64..."
