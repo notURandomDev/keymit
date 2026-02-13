@@ -173,8 +173,8 @@ struct HeatmapView: View {
                     }
                     .padding(.bottom, 4)
                     .onAppear {
-                        if let last = dates.last {
-                            // proxy.scrollTo(last, anchor: .trailing) // Removed proxy dependency
+                        if !dates.isEmpty {
+                            // proxy.scrollTo(dates.last, anchor: .trailing) // Removed proxy dependency
                         }
                     }
                 }

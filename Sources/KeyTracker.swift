@@ -202,11 +202,6 @@ class KeyTracker: ObservableObject {
             cacheIcon(img, for: cacheKey)
             return img
         }
-        if let path = NSWorkspace.shared.fullPath(forApplication: name) {
-            let img = NSWorkspace.shared.icon(forFile: path)
-            cacheIcon(img, for: cacheKey)
-            return img
-        }
         let fallback = NSImage(named: NSImage.applicationIconName) ?? NSImage(size: NSSize(width: 32, height: 32))
         cacheIcon(fallback, for: cacheKey)
         return fallback

@@ -72,7 +72,7 @@ struct SettingsView: View {
         .onAppear {
             selectedLanguage = prefs.language
         }
-        .onChange(of: selectedLanguage) { _, newValue in
+        .onChange(of: selectedLanguage) { newValue in
             if newValue != prefs.language { showRestart = true }
         }
         .alert(LocalizedStringKey("alert_confirm_wipe_title"), isPresented: $showConfirm) {
