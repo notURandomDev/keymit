@@ -3,6 +3,7 @@
 APP_NAME="KeyCadence"
 DMG_NAME="KeyCadence"
 VOLUME_NAME="KeyCadence"
+DMG_SIZE="15m"
 
 echo "🔨 Building app..."
 ./build.sh
@@ -27,7 +28,7 @@ ln -s /Applications "$DMG_DIR/Applications"
 
 # Create temporary DMG
 TEMP_DMG="temp.dmg"
-hdiutil create -srcfolder "$DMG_DIR" -volname "$VOLUME_NAME" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size 100m "$TEMP_DMG"
+hdiutil create -srcfolder "$DMG_DIR" -volname "$VOLUME_NAME" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size "$DMG_SIZE" "$TEMP_DMG"
 
 # Mount the temporary DMG
 DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "$TEMP_DMG" | egrep '^/dev/' | sed 1q | awk '{print $1}')
