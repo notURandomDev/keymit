@@ -13,6 +13,7 @@ KeyCadence.app/
 build/
 dist/
 out/
+backups/
 
 # Swift / Xcode / SwiftPM
 .build/
