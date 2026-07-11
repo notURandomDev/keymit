@@ -1,144 +1,80 @@
 # KeyCadence
 
-**[English](README.md)** | [简体中文](README.zh-CN.md)
+**English** | [简体中文](README.zh-CN.md)
 
-KeyCadence is a macOS menu bar application that tracks daily keystroke counts and displays distribution by application. The project supports both Chinese and English localization with a native glass-morphism interface style.
+KeyCadence is a private, local-first macOS menu bar app that counts typing
+activity by day and application. It displays a yearly heatmap and per-app daily
+breakdown without recording the keys or text you type.
 
-## Quick Start
+## Product scope
 
-### Build from Source
+- Daily keystroke total, yearly activity heatmap, and per-app distribution
+- Optional Backspace subtraction that keeps lifetime and daily data consistent
+- English and Simplified Chinese UI
+- Optional launch at login
+- Local data reset with confirmation
+- Automatic recovery after Accessibility permission is granted or an event tap
+  is disabled by macOS
+
+KeyCadence requires macOS 13 or later. Accessibility permission is needed for
+global keyboard event counts. The event tap is listen-only; only aggregate
+counts and application names are persisted in `UserDefaults` on this Mac.
+
+## Build and test
+
+Xcode Command Line Tools or Xcode are required.
 
 ```bash
-# Build the application
+swift test --disable-sandbox
 ./build.sh
-
-# Launch the app
 open KeyCadence.app
 ```
 
-### Permissions
+`build.sh` creates and verifies an arm64 + x86_64 universal app with an ad-hoc
+signature by default. Its module cache and intermediate output stay under
+`.build`, making the build reproducible in restricted and CI environments.
 
-First run requires authorization in **System Settings → Privacy & Security → Accessibility**. After rebuilding (path or signature changes), re-authorization may be required.
+After launch, allow KeyCadence in **System Settings → Privacy & Security →
+Accessibility**. The app detects the authorization and starts tracking without a
+restart.
 
-### Icon Configuration
+Because releases are ad-hoc signed and not notarized, the first launch is
+blocked by Gatekeeper. Follow [INSTALL.md](INSTALL.md) to approve the app in
+System Settings and verify the published SHA-256 checksum first.
 
-Provide one of the following under the `Assets` directory:
+## Package
 
-- `AppIcon.icns`
-- `AppIcon.iconset`
-- `AppIcon.png` (1024x1024)
+For a local, non-distributable test package:
 
-## Features
+```bash
+./create-dmg.sh
+```
 
-- Menu bar window showing total keystrokes and app distribution
-- Ignores modifier keys, function keys, Backspace/Forward Delete, and other non-typing inputs
-- Aggregates statistics by application with corresponding app icons
-- Settings page supports clearing data and switching languages (follow system/English/Simplified Chinese)
-- Provides "restart required" prompt when switching languages with one-click restart
-- Native NSVisualEffectView glass-morphism background
+The ad-hoc signed, verified DMG and SHA-256 checksum are written to `dist/`.
+GitHub release steps and the required disclosure are in
+[RELEASING.md](RELEASING.md).
 
-## Architecture Overview
+## Architecture
 
-- **Event Collection & Data Layer**: Global keyboard event monitoring, filtering, aggregation, and persistence
-- **Presentation Layer**: SwiftUI dashboard and settings page
-- **System Integration**: Menu bar window, native glass material, accessibility permissions, code signing
-- **Localization**: Multi-language strings based on Localizable.strings
+- `Sources/Core/StatisticsStore.swift`: deterministic statistics state and
+  invariants; covered by unit tests
+- `Sources/KeyTracker.swift`: Accessibility lifecycle, listen-only event tap,
+  app attribution, throttled persistence, and legacy history migration
+- `Sources/*View.swift`: SwiftUI menu dashboard, heatmap, and settings
+- `Sources/AppPreferences.swift` / `LaunchManager.swift`: language and
+  `SMAppService` integration
+- `build.sh`, `create-dmg.sh`, `release.sh`: verified ad-hoc build and GitHub
+  package release gates
+- `.github/workflows/ci.yml`: PR-only core tests and universal app build
+- `.github/workflows/release.yml`: `v*` tag validation, DMG packaging, checksum,
+  and automatic GitHub Release creation
 
-## Module Description
+This separation keeps macOS integration at the boundary while the state
+transitions most likely to corrupt user data remain independently testable.
 
-### KeyTracker (Core Logic)
+## Data compatibility
 
-- **File**: [KeyTracker.swift](Sources/KeyTracker.swift)
-- **Responsibilities**:
-  - Creates CGEventTap to capture global keystrokes, processed in main RunLoop
-  - Filtering rules:
-    - Ignores Backspace(51), Forward Delete(117), Caps Lock(57), F1-F12(122-135)
-    - Ignores combinations with Command/Control/Option modifiers, ignores empty character events
-  - App identification: Monitors foreground app activation, records localizedName and bundleIdentifier mapping
-  - App icons: Prioritize bundleIdentifier → URL retrieval; fallback to running process bundleURL or system path; ultimately default to system app icon
-  - Persistence: UserDefaults stores total count and distribution; introduces dirty flag, timer, and counter for throttling (save every 100 keystrokes or every 2 seconds), force save on exit
-
-### DashboardView (Dashboard)
-
-- **File**: [DashboardView.swift](Sources/DashboardView.swift)
-- **Responsibilities**:
-  - Displays today's total keystrokes and app list (progress bars show distribution)
-  - Buttons to open settings window and quit app
-  - Uses native glass background: root view uses underWindowBackground, list items use contentBackground
-
-### SettingsView (Settings Page)
-
-- **File**: [SettingsView.swift](Sources/SettingsView.swift)
-- **Responsibilities**:
-  - Switch language (follow system/English/Simplified Chinese); after selection, shows dialog explaining restart requirement, cancel doesn't apply, confirm writes and restarts
-  - Clear data operation with confirmation dialog
-  - Uses native glass background
-
-### SettingsWindowManager (Settings Window Management)
-
-- **File**: [SettingsWindowManager.swift](Sources/SettingsWindowManager.swift)
-- **Responsibilities**:
-  - Implements singleton settings window using NSWindow to prevent multiple instances
-  - Injects locale environment and title localization; updates window title after language change
-
-### App Entry & Scene
-
-- **File**: [App.swift](Sources/App.swift)
-- **Responsibilities**:
-  - Uses MenuBarExtra window style to provide dashboard window
-  - Registers Settings scene and injects locale environment
-  - Displays total keystrokes in real-time in menu bar label
-
-### Preferences & Restart
-
-- **AppPreferences**: [AppPreferences.swift](Sources/AppPreferences.swift)
-  - Stores language selection (\_system/en/zh-Hans), provides SwiftUI locale environment
-- **RestartHelper**: [RestartHelper.swift](Sources/RestartHelper.swift)
-  - Relaunches app via open and gracefully exits current process
-
-### Native Glass Material Wrapper
-
-- **GlassBackground**: [GlassBackground.swift](Sources/GlassBackground.swift)
-  - Wraps NSVisualEffectView as SwiftUI background, configurable material and blendingMode
-
-### Build & Resources
-
-- **Build script**: [build.sh](build.sh)
-  - Compiles Swift source code, copies Info.plist, copies localization resources
-  - Icon handling: Supports Assets/AppIcon.icns, AppIcon.iconset, or 1024x1024 PNG auto-packaging
-  - Performs ad-hoc signing to improve stability of system permission associations
-- **Info.plist**: [Info.plist](Info.plist)
-  - Declares LSUIElement menu bar app, Bundle icon, and localization regions
-- **Localization resources**:
-  - English: [en.lproj/Localizable.strings](Localization/en.lproj/Localizable.strings)
-  - Chinese (Simplified): [zh-Hans.lproj/Localizable.strings](Localization/zh-Hans.lproj/Localizable.strings)
-- **Icon Assets**:
-  - Documentation: [Assets/README.md](Assets/README.md)
-
-## Localization & Language Switching
-
-- App defaults to following system language; manual language selection available in settings
-- After selecting a new language, a dialog prompts for restart; cancel doesn't apply changes, confirm immediately restarts and applies changes
-
-## Filtering Rules
-
-- **Counted keystrokes**: Regular input characters (including Shift combinations for uppercase or symbols)
-- **Ignored keystrokes**:
-  - Backspace(⌫), Forward Delete(⌦)
-  - Caps Lock, F1-F12 function keys
-  - Combinations with Command/Control/Option modifier keys
-  - Events without characters (e.g., some system keys)
-
-## Performance Optimization
-
-- **Write throttling**: Save every 2 seconds or after accumulating 100 keystrokes, force save on exit
-- **Icon caching**: Prioritize bundle identifier as key; simple eviction when cache exceeds 128 items
-
-## Contributing
-
-- PRs and Issues are welcome; suggest running build script to verify before submitting
-- To add more localizations or configuration options, extend in SettingsView and Localizable.strings
-
-## License
-
-- To be determined (MIT/Apache-2.0, etc.)
+Existing `totalKey`, `appStats`, and `dailyHistory` preferences are retained.
+Legacy daily totals are migrated when loaded. Invalid negative values are
+sanitized, and clearing statistics does not remove language or login-item
+preferences.

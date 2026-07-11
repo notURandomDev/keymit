@@ -1,144 +1,69 @@
 # KeyCadence
 
-[English](README.md) | **[简体中文](README.zh-CN.md)**
+[English](README.md) | **简体中文**
 
-KeyCadence 是一个 macOS 菜单栏应用，用于统计每日键盘敲击次数，并按应用维度展示分布。项目同时支持中英文本地化，并遵循原生玻璃材质的界面风格。
+KeyCadence 是一个隐私优先、数据仅存本机的 macOS 菜单栏应用。它按日期和应用统计
+打字次数，并展示年度热力图和每日应用分布，但不会记录你按下的具体按键或输入的文字。
 
-## 快速开始
+## 产品范围
 
-### 从源码构建
+- 今日打字次数、年度活跃热力图和应用分布
+- 可选的 Backspace 删减统计，并保证累计与每日数据一致
+- 英文和简体中文界面
+- 可选开机自启动
+- 带二次确认的本地统计清理
+- 获得辅助功能授权后自动开始统计；监听被 macOS 暂停时自动恢复
+
+KeyCadence 支持 macOS 13 及以上版本。全局按键计数需要辅助功能权限。事件监听为
+只读模式，应用只会在本机 `UserDefaults` 中保存汇总次数和应用名称。
+
+## 构建与测试
+
+需要安装 Xcode Command Line Tools 或 Xcode。
 
 ```bash
-# 构建应用
+swift test --disable-sandbox
 ./build.sh
-
-# 启动应用
 open KeyCadence.app
 ```
 
-### 权限设置
+`build.sh` 默认生成经过校验、使用临时签名的 arm64 + x86_64 通用应用。模块缓存和
+中间产物均位于 `.build`，因此在受限环境和 CI 中也能稳定构建。
 
-首次运行需在 **系统设置 → 隐私与安全 → 辅助功能** 中授权。重构建后（路径或签名变化）可能需要重新授权。
+首次启动后，请在 **系统设置 → 隐私与安全性 → 辅助功能** 中允许 KeyCadence。
+应用会自动识别授权并开始统计，无需重启。
 
-### 图标配置
+由于 Release 使用 Ad Hoc 签名且未经过 Apple 公证，Gatekeeper 会阻止首次启动。
+请按照 [INSTALL.md](INSTALL.md) 在系统设置中允许打开，并先核对 Release 页面公布的
+SHA-256 校验值。
 
-在 `Assets` 目录下提供以下任一格式：
+## 打包
 
-- `AppIcon.icns`
-- `AppIcon.iconset`
-- `AppIcon.png`（1024x1024）
+生成仅供本地测试、不可公开分发的安装包：
 
-## 功能特性
+```bash
+./create-dmg.sh
+```
 
-- 菜单栏窗口展示总敲击数与各应用占比
-- 忽略修饰键、功能键、Backspace/Forward Delete 等非打字输入
-- 按应用聚合统计，显示对应应用图标
-- 设置页支持清空数据、切换语言（跟随系统/英文/中文简体）
-- 切换语言时提供"需要重启"提示并可一键重启
-- 原生 NSVisualEffectView 玻璃材质背景
+使用 Ad Hoc 签名且经过本地校验的 DMG 和 SHA-256 文件会写入 `dist/`。GitHub
+Release 流程和必须披露的限制见 [RELEASING.md](RELEASING.md)。
 
-## 架构总览
+## 架构
 
-- 事件采集与数据层：全局键盘事件监听、过滤、聚合与持久化
-- 展示层：SwiftUI 仪表盘与设置页
-- 系统集成：菜单栏窗口、原生玻璃材质、可访问性权限、代码签名
-- 本地化：基于 Localizable.strings 的多语言文案
+- `Sources/Core/StatisticsStore.swift`：确定性的统计状态与数据约束，带单元测试
+- `Sources/KeyTracker.swift`：权限生命周期、只读事件监听、应用归属、节流持久化和
+  旧数据迁移
+- `Sources/*View.swift`：SwiftUI 菜单面板、热力图和设置界面
+- `Sources/AppPreferences.swift` / `LaunchManager.swift`：语言与 `SMAppService` 登录项
+- `build.sh`、`create-dmg.sh`、`release.sh`：经过校验的 Ad Hoc 构建与 GitHub
+  打包发布门禁
+- `.github/workflows/ci.yml`：仅针对 PR 的核心测试和通用应用构建
+- `.github/workflows/release.yml`：校验 `v*` 标签、生成 DMG 和校验文件，并自动创建
+  GitHub Release
 
-## 模块说明
+macOS 系统集成被限制在边界层，最容易造成用户数据损坏的状态变更则可独立测试。
 
-### KeyTracker（核心逻辑）
+## 数据兼容
 
-- 文件：[KeyTracker.swift](Sources/KeyTracker.swift)
-- 职责：
-  - 创建 CGEventTap 捕获全局按键，处理在主 RunLoop 中
-  - 过滤规则：
-    - 忽略 Backspace(51)、Forward Delete(117)、Caps Lock(57)、F1–F12(122–135)
-    - 忽略含 Command/Control/Option 的组合键，忽略空字符事件
-  - 应用识别：监听前台应用激活，记录 localizedName 与 bundleIdentifier 映射
-  - 应用图标：优先通过 bundleIdentifier → URL 获取；退化到运行进程 bundleURL 或系统路径；最终兜底为系统应用图标
-  - 持久化：UserDefaults 存储总数与分布；引入脏标记、定时器与计数器进行节流（100 次或每 2 秒保存），退出时强制保存
-
-### DashboardView（仪表盘）
-
-- 文件：[DashboardView.swift](Sources/DashboardView.swift)
-- 职责：
-  - 展示今日敲击总数与应用列表（进度条显示占比）
-  - 打开设置窗口、退出应用按钮
-  - 使用原生玻璃背景：根视图使用 underWindowBackground，列表项使用 contentBackground
-
-### SettingsView（设置页）
-
-- 文件：[SettingsView.swift](Sources/SettingsView.swift)
-- 职责：
-  - 切换语言（跟随系统/英文/中文简体）；选择后先弹窗说明需重启，取消不应用，确认写入并重启
-  - 清空数据操作与确认弹窗
-  - 使用原生玻璃背景
-
-### SettingsWindowManager（设置窗口管理）
-
-- 文件：[SettingsWindowManager.swift](Sources/SettingsWindowManager.swift)
-- 职责：
-  - 以 NSWindow 实现单实例设置窗口，避免多开
-  - 注入语言环境与标题本地化；语言变更后更新窗口标题
-
-### App 入口与场景
-
-- 文件：[App.swift](Sources/App.swift)
-- 职责：
-  - 使用 MenuBarExtra 的 window 风格提供仪表盘窗口
-  - 注册 Settings 场景并注入语言环境
-  - 在菜单栏标签中实时显示总敲击数
-
-### 偏好与重启
-
-- **AppPreferences**：[AppPreferences.swift](Sources/AppPreferences.swift)
-  - 存储语言选择（\_system/en/zh-Hans），提供 SwiftUI locale 环境
-- **RestartHelper**：[RestartHelper.swift](Sources/RestartHelper.swift)
-  - 通过 open 重新拉起应用并优雅退出当前进程
-
-### 原生玻璃材质封装
-
-- **GlassBackground**：[GlassBackground.swift](Sources/GlassBackground.swift)
-  - 将 NSVisualEffectView 封装为 SwiftUI 背景，可配置 material 和 blendingMode
-
-### 构建与资源
-
-- **构建脚本**：[build.sh](build.sh)
-  - 负责编译 Swift 源码、拷贝 Info.plist、复制本地化资源
-  - 图标处理：支持 Assets/AppIcon.icns、AppIcon.iconset 或 1024x1024 PNG 自动打包
-  - 执行 ad-hoc 签名，改善系统权限关联的稳定性
-- **Info.plist**：[Info.plist](Info.plist)
-  - 声明 LSUIElement 菜单栏应用、Bundle 图标与本地化区域
-- **本地化资源**：
-  - 英文：[en.lproj/Localizable.strings](Localization/en.lproj/Localizable.strings)
-  - 中文（简体）：[zh-Hans.lproj/Localizable.strings](Localization/zh-Hans.lproj/Localizable.strings)
-- **图标 Assets**：
-  - 说明文档：[Assets/README.md](Assets/README.md)
-
-## 本地化与语言切换
-
-- 应用默认跟随系统语言；可在设置页手动选择语言
-- 选择新语言后会弹窗提示需要重启；取消不生效，确认立即重启并应用
-
-## 过滤规则说明
-
-- **被统计的按键**：常规输入字符（包含 Shift 组合形成的大写或符号）
-- **被忽略的按键**：
-  - Backspace(⌫)、Forward Delete(⌦)
-  - Caps Lock、F1–F12 功能键
-  - 含 Command/Control/Option 修饰键的组合
-  - 无字符的事件（例如部分系统键）
-
-## 性能优化
-
-- **写入节流**：每 2 秒或累计 100 次触发保存，退出时强制保存
-- **图标缓存**：以 bundle identifier 优先作为键；缓存超过 128 项时做简单淘汰
-
-## 贡献
-
-- 欢迎提交 PR 与 Issue；建议在提交前运行构建脚本验证
-- 如需添加更多本地化或配置项，可在 SettingsView 与 Localizable.strings 扩展
-
-## 许可证
-
-- 待补充（MIT/Apache-2.0 等）
+已有的 `totalKey`、`appStats` 和 `dailyHistory` 偏好会继续保留。旧版每日总数会在
+加载时迁移，异常负数会被修正；清空统计不会再误删语言或开机启动偏好。
