@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package-and-release:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Validate tag and build release package
+        id: package
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' Info.plist)"
+          ./release.sh "$VERSION" "$BUILD_NUMBER"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.package.outputs.version }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/KeyCadence-$VERSION.dmg" \
+            "dist/KeyCadence-$VERSION.dmg.sha256" \
+            "INSTALL.md" \
+            --verify-tag \
+            --title "KeyCadence $GITHUB_REF_NAME" \
+            --notes-file INSTALL.md

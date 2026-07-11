@@ -9,6 +9,7 @@ Icon?
 
 # Build outputs
 KeyCadence.app/
+*.dmg
 build/
 dist/
 out/
