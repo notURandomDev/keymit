@@ -1,67 +1,42 @@
 #!/bin/bash
 
-APP_NAME="KeyCadence"
-DMG_NAME="KeyCadence"
-VOLUME_NAME="KeyCadence"
-DMG_SIZE="15m"
+set -Eeuo pipefail
 
-echo "🔨 Building app..."
-./build.sh
+trap 'status=$?; echo "error: create-dmg.sh failed at line $LINENO (status $status)" >&2; exit $status' ERR
 
-if [ $? -ne 0 ]; then
-    echo "❌ Build failed, cannot create DMG"
-    exit 1
-fi
+readonly ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+readonly APP_NAME="KeyCadence"
+readonly VERSION="${VERSION:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$ROOT_DIR/Info.plist")}"
+readonly BUILD_NUMBER="${BUILD_NUMBER:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$ROOT_DIR/Info.plist")}"
+readonly OUTPUT_DIR="${OUTPUT_DIR:-$ROOT_DIR/dist}"
+readonly OUTPUT_DMG="${OUTPUT_DMG:-$OUTPUT_DIR/$APP_NAME-$VERSION.dmg}"
 
-echo "📦 Creating DMG..."
+STAGING_DIR="$(mktemp -d "${TMPDIR:-/tmp}/keycadence-dmg.XXXXXX")"
+cleanup() {
+    rm -rf "$STAGING_DIR"
+}
+trap cleanup EXIT INT TERM
 
-# Create a temporary directory for DMG contents
-DMG_DIR="dmg_temp"
-rm -rf "$DMG_DIR"
-mkdir -p "$DMG_DIR"
+cd "$ROOT_DIR"
+env VERSION="$VERSION" BUILD_NUMBER="$BUILD_NUMBER" ./build.sh
 
-# Copy the app
-cp -R "$APP_NAME.app" "$DMG_DIR/"
+mkdir -p "$OUTPUT_DIR"
+ditto "$APP_NAME.app" "$STAGING_DIR/$APP_NAME.app"
+cp INSTALL.md "$STAGING_DIR/Installation Guide.md"
+ln -s /Applications "$STAGING_DIR/Applications"
+rm -f "$OUTPUT_DMG"
 
-# Create a symbolic link to Applications
-ln -s /Applications "$DMG_DIR/Applications"
+hdiutil create \
+    -volname "$APP_NAME" \
+    -srcfolder "$STAGING_DIR" \
+    -format UDZO \
+    -imagekey zlib-level=9 \
+    -ov \
+    "$OUTPUT_DMG"
 
-# Create temporary DMG
-TEMP_DMG="temp.dmg"
-hdiutil create -srcfolder "$DMG_DIR" -volname "$VOLUME_NAME" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size "$DMG_SIZE" "$TEMP_DMG"
+hdiutil verify "$OUTPUT_DMG"
+codesign --verify --deep --strict --verbose=2 "$APP_NAME.app"
 
-# Mount the temporary DMG
-DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "$TEMP_DMG" | egrep '^/dev/' | sed 1q | awk '{print $1}')
-
-# Set up the DMG appearance (optional - sets icon positions and window size)
-sleep 2
-echo '
-   tell application "Finder"
-     tell disk "'$VOLUME_NAME'"
-           open
-           set current view of container window to icon view
-           set toolbar visible of container window to false
-           set statusbar visible of container window to false
-           set the bounds of container window to {400, 100, 920, 440}
-           set viewOptions to the icon view options of container window
-           set arrangement of viewOptions to not arranged
-           set icon size of viewOptions to 128
-           set position of item "'$APP_NAME'" of container window to {130, 150}
-           set position of item "Applications" of container window to {390, 150}
-           close
-           open
-           update without registering applications
-           delay 2
-     end tell
-   end tell
-' | osascript
-
-# Unmount and convert to compressed DMG
-hdiutil detach "$DEVICE"
-hdiutil convert "$TEMP_DMG" -format UDZO -imagekey zlib-level=9 -o "$DMG_NAME.dmg"
-
-# Cleanup
-rm -rf "$DMG_DIR" "$TEMP_DMG"
-
-echo "✅ DMG created successfully: $DMG_NAME.dmg"
-echo "👉 Users can now drag the app to Applications folder to install"
+shasum -a 256 "$OUTPUT_DMG" > "$OUTPUT_DMG.sha256"
+echo "Created and verified: $OUTPUT_DMG"
+echo "Checksum: $OUTPUT_DMG.sha256"
