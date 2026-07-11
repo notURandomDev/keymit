@@ -10,6 +10,7 @@ struct SettingsView: View {
     @State private var selectedLanguage: String = "_system"
     @State private var showRestart = false
     @State private var showConfirm = false
+    @State private var launchAtLoginError: String?
 
     var body: some View {
         Form {
@@ -20,9 +21,21 @@ struct SettingsView: View {
                     Text(LocalizedStringKey("lang_en")).tag("en")
                     Text(LocalizedStringKey("lang_zh_hans")).tag("zh-Hans")
                 }
-                Toggle(LocalizedStringKey("toggle_launch_at_login"), isOn: $prefs.launchAtLogin)
+                Toggle(
+                    LocalizedStringKey("toggle_launch_at_login"),
+                    isOn: Binding(
+                        get: { prefs.launchAtLogin },
+                        set: { enabled in
+                            do {
+                                try prefs.setLaunchAtLogin(enabled)
+                            } catch {
+                                launchAtLoginError = error.localizedDescription
+                            }
+                        }
+                    )
+                )
             } header: {
-                Label("General", systemImage: "gearshape")
+                Label(LocalizedStringKey("section_general"), systemImage: "gearshape")
             }
 
             // Tracking Section
@@ -32,11 +45,14 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } header: {
-                Label("Tracking", systemImage: "keyboard")
+                Label(LocalizedStringKey("section_tracking"), systemImage: "keyboard")
             }
 
             // Data Section
             Section {
+                Text(LocalizedStringKey("privacy_summary"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 HStack {
                     VStack(alignment: .leading) {
                         Text(LocalizedStringKey("desc_clear_all"))
@@ -50,19 +66,19 @@ struct SettingsView: View {
                     }
                 }
             } header: {
-                Label("Data", systemImage: "externaldrive")
+                Label(LocalizedStringKey("section_data"), systemImage: "externaldrive")
             }
 
             // About Section
             Section {
                 HStack {
-                    Text("Version")
+                    Text(LocalizedStringKey("label_version"))
                     Spacer()
-                    Text("1.0")
+                    Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")
                         .foregroundStyle(.secondary)
                 }
             } header: {
-                Label("About", systemImage: "info.circle")
+                Label(LocalizedStringKey("section_about"), systemImage: "info.circle")
             }
         }
         .formStyle(.grouped)
@@ -91,6 +107,17 @@ struct SettingsView: View {
             }
         } message: {
             Text(LocalizedStringKey("alert_restart_message"))
+        }
+        .alert(
+            LocalizedStringKey("launch_at_login_error_title"),
+            isPresented: Binding(
+                get: { launchAtLoginError != nil },
+                set: { if !$0 { launchAtLoginError = nil } }
+            )
+        ) {
+            Button(LocalizedStringKey("action_ok"), role: .cancel) {}
+        } message: {
+            Text(launchAtLoginError ?? "")
         }
     }
 }

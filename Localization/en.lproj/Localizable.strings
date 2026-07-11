@@ -25,6 +25,19 @@
 "toggle_decrement_backspace" = "Subtract on Backspace";
 "desc_decrement_backspace" = "When enabled, pressing Backspace decreases total and per-app counts (never below 0).";
 "toggle_launch_at_login" = "Launch at login";
+"section_general" = "General";
+"section_tracking" = "Tracking";
+"section_data" = "Data";
+"section_about" = "About";
+"label_version" = "Version";
+"launch_at_login_error_title" = "Couldn’t update login setting";
+"action_ok" = "OK";
+"tracking_inactive_title" = "Keystroke tracking is off";
+"tracking_inactive_message" = "Allow KeyCadence in Accessibility settings to start counting.";
+"action_fix_permission" = "Fix";
+"unknown_application" = "Unknown Application";
+"privacy_summary" = "KeyCadence stores counts and app names only on this Mac. It never stores the keys or text you type.";
+"heatmap_day_help" = "%@: %d keystrokes";
 
 "label_activity" = "Activity";
 "label_applications" = "Applications";

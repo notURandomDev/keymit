@@ -43,6 +43,12 @@ struct DashboardView: View {
                 showBackToToday: !isTodaySelected,
                 onBackToToday: { selectedDate = Date() }
             )
+
+            if tracker.trackingState != .active {
+                TrackingStatusView(tracker: tracker)
+                    .padding(.horizontal)
+                    .padding(.bottom, 12)
+            }
             
             Divider()
                 .padding(.horizontal)
@@ -138,6 +144,31 @@ struct DashboardView: View {
             // Auto-switch to new day at midnight
             selectedDate = Date()
         }
+    }
+}
+
+private struct TrackingStatusView: View {
+    @ObservedObject var tracker: KeyTracker
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LocalizedStringKey("tracking_inactive_title"))
+                    .font(.subheadline.weight(.semibold))
+                Text(LocalizedStringKey("tracking_inactive_message"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Button(LocalizedStringKey("action_fix_permission")) {
+                tracker.openAccessibilitySettings()
+                tracker.requestAccessibilityPermission()
+            }
+        }
+        .padding(10)
+        .background(Color.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
     }
 }
 
