@@ -48,6 +48,18 @@ SHA-256 校验值。
 使用 Ad Hoc 签名且经过本地校验的 DMG 和 SHA-256 文件会写入 `dist/`。GitHub
 Release 流程和必须披露的限制见 [RELEASING.md](RELEASING.md)。
 
+## 备份本地数据
+
+退出 KeyCadence 后运行：
+
+```bash
+./backup-data.sh
+```
+
+脚本会生成一个私密的 `backups/KeyCadence-data-<时间戳>.tar.gz` 文件，其中包含
+当前偏好域，以及在三个历史 Bundle ID 下找到的旧数据。也可以把目标 `.tar.gz`
+路径作为第一个参数传入。
+
 ## 架构
 
 - `Sources/Core/StatisticsStore.swift`：确定性的统计状态与数据约束，带单元测试

@@ -54,6 +54,19 @@ The ad-hoc signed, verified DMG and SHA-256 checksum are written to `dist/`.
 GitHub release steps and the required disclosure are in
 [RELEASING.md](RELEASING.md).
 
+## Back up local data
+
+Quit KeyCadence, then run:
+
+```bash
+./backup-data.sh
+```
+
+The script creates one private `backups/KeyCadence-data-<timestamp>.tar.gz`
+file. It includes the current preferences domain and any data found under the
+three historical bundle identifiers. Pass a `.tar.gz` path as the first
+argument to choose another destination.
+
 ## Architecture
 
 - `Sources/Core/StatisticsStore.swift`: deterministic statistics state and
