@@ -6,13 +6,13 @@ import SwiftUI
 
 @main
 struct KeyCadenceApp: App {
-    @StateObject private var prefs = AppPreferences()
+    @StateObject private var prefs: AppPreferences
     @StateObject private var tracker: KeyTracker
     
     init() {
-        let p = AppPreferences()
-        _prefs = StateObject(wrappedValue: p)
-        _tracker = StateObject(wrappedValue: KeyTracker(prefs: p))
+        let preferences = AppPreferences()
+        _prefs = StateObject(wrappedValue: preferences)
+        _tracker = StateObject(wrappedValue: KeyTracker(prefs: preferences))
     }
 
     var body: some Scene {
