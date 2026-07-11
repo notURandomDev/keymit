@@ -1,42 +1,18 @@
-import Foundation
 import ServiceManagement
 
-// MARK: - File Description
-// Manages the application's launch at login behavior.
-// Provides methods to check and set the launch at login status across different macOS versions.
-
-class LaunchManager {
-    private static let bundleIdentifier = "com.user.KeyCadence"
-    
+enum LaunchManager {
     static func isLaunchAtLoginEnabled() -> Bool {
-        if #available(macOS 13.0, *) {
-            return SMAppService.mainApp.status == .enabled
-        } else {
-            guard let jobs = (SMCopyAllJobDictionaries(kSMDomainUserLaunchd).takeRetainedValue() as? [[String: AnyObject]]) else {
-                return false
-            }
-            
-            return jobs.contains { $0["Label"] as? String == bundleIdentifier }
-        }
+        SMAppService.mainApp.status == .enabled
     }
-    
-    static func setLaunchAtLogin(_ enabled: Bool) {
-        if #available(macOS 13.0, *) {
-            do {
-                if enabled {
-                    try SMAppService.mainApp.register()
-                } else {
-                    try SMAppService.mainApp.unregister()
-                }
-            } catch {
-                print("Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
-            }
+
+    static func setLaunchAtLogin(_ enabled: Bool) throws {
+        let service = SMAppService.mainApp
+        if enabled {
+            guard service.status != .enabled else { return }
+            try service.register()
         } else {
-            if SMLoginItemSetEnabled(bundleIdentifier as CFString, enabled) {
-                print("Successfully \(enabled ? "enabled" : "disabled") launch at login")
-            } else {
-                print("Failed to \(enabled ? "enable" : "disable") launch at login")
-            }
+            guard service.status != .notRegistered else { return }
+            try service.unregister()
         }
     }
 }

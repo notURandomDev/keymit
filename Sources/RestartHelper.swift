@@ -8,9 +8,19 @@ enum RestartHelper {
     static func relaunch() {
         let appPath = Bundle.main.bundlePath
         let task = Process()
-        task.launchPath = "/usr/bin/env"
-        task.arguments = ["sh", "-c", "sleep 0.2; open \"\(appPath)\""]
-        try? task.run()
+        task.executableURL = URL(fileURLWithPath: "/bin/sh")
+        task.arguments = [
+            "-c",
+            "sleep 0.5; /usr/bin/open -n -- \"$1\"",
+            "KeyCadence-relaunch",
+            appPath
+        ]
+        do {
+            try task.run()
+        } catch {
+            NSLog("KeyCadence failed to schedule relaunch: %@", error.localizedDescription)
+            return
+        }
         NSApp.terminate(nil)
     }
 }

@@ -7,6 +7,7 @@ import SwiftUI
 struct HeatmapView: View {
     @ObservedObject var tracker: KeyTracker
     @Binding var selectedDate: Date
+    @Environment(\.locale) private var locale
     
     // State for year selection
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
@@ -17,13 +18,21 @@ struct HeatmapView: View {
     private let calendar = Calendar.current
     
     // Labels
-    private let weekDays = ["", "Mon", "", "Wed", "", "Fri", ""]
-    private let monthFormatter: DateFormatter = {
+    private var weekDays: [String] {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        let symbols = formatter.veryShortWeekdaySymbols ?? []
+        guard symbols.count == 7 else { return Array(repeating: "", count: 7) }
+        let start = max(0, min(6, calendar.firstWeekday - 1))
+        return Array(symbols[start...] + symbols[..<start])
+    }
+
+    private var monthFormatter: DateFormatter {
         let f = DateFormatter()
         f.dateFormat = "MMM"
-        f.locale = Locale(identifier: "en_US")
+        f.locale = locale
         return f
-    }()
+    }
     
     // Compute dates for the entire selected year
     private var dates: [Date] {
@@ -144,6 +153,7 @@ struct HeatmapView: View {
                                 let isInYear = calendar.component(.year, from: date) == selectedYear
                                 let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
                                 let isToday = calendar.isDateInToday(date)
+                                let isSelectable = isInYear && date <= Date()
                                 
                                 Rectangle()
                                     .fill(isInYear ? color(for: count) : Color.clear)
@@ -156,7 +166,8 @@ struct HeatmapView: View {
                                                 lineWidth: isSelected ? 1 : (isToday ? 1 : 0)
                                             )
                                     )
-                                    .help("\(dateString): \(count) keystrokes")
+                                    .opacity(isSelectable ? 1 : 0.45)
+                                    .help(String(format: NSLocalizedString("heatmap_day_help", comment: ""), dateString, count))
                                     .onHover { isHovering in
                                         if isHovering {
                                             hoveredDay = (date, count)
@@ -165,7 +176,9 @@ struct HeatmapView: View {
                                         }
                                     }
                                     .onTapGesture {
-                                        selectedDate = date
+                                        if isSelectable {
+                                            selectedDate = date
+                                        }
                                     }
                                     .id(date)
                             }

@@ -8,6 +8,10 @@
     <string>com.notURandomDev.KeyCadence</string>
     <key>CFBundleName</key>
     <string>KeyCadence</string>
+    <key>CFBundleDisplayName</key>
+    <string>KeyCadence</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleLocalizations</key>
@@ -16,13 +20,17 @@
         <string>zh-Hans</string>
     </array>
     <key>CFBundleShortVersionString</key>
-    <string>1.0</string>
+    <string>1.0.0</string>
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>CFBundleIconFile</key>
     <string>AppIcon.icns</string>
     <key>LSUIElement</key>
-    <true/> <!-- 这是一个纯菜单栏应用，不在 Dock 显示 -->
+    <true/>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.productivity</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
