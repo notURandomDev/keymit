@@ -33,10 +33,10 @@
 "launch_at_login_error_title" = "Couldn’t update login setting";
 "action_ok" = "OK";
 "tracking_inactive_title" = "Keystroke tracking is off";
-"tracking_inactive_message" = "Allow KeyCadence in Accessibility settings to start counting.";
+"tracking_inactive_message" = "Allow Keymit in Accessibility settings to start counting.";
 "action_fix_permission" = "Fix";
 "unknown_application" = "Unknown Application";
-"privacy_summary" = "KeyCadence stores counts and app names only on this Mac. It never stores the keys or text you type.";
+"privacy_summary" = "Keymit stores counts and app names only on this Mac. It never stores the keys or text you type.";
 "heatmap_day_help" = "%@: %d keystrokes";
 
 "label_activity" = "Activity";

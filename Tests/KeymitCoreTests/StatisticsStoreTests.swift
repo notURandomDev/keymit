@@ -1,6 +1,7 @@
 import XCTest
-@testable import KeyCadenceCore
-
+@testable import KeymitCore
+// MARK: - File Description
+// Verifies that keystroke statistics remain consistent across totals, dates, and applications.
 final class StatisticsStoreTests: XCTestCase {
     func testRecordingKeepsLifetimeAndDailyStatsInSync() {
         var store = StatisticsStore()

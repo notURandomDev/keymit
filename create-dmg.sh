@@ -5,13 +5,13 @@ set -Eeuo pipefail
 trap 'status=$?; echo "error: create-dmg.sh failed at line $LINENO (status $status)" >&2; exit $status' ERR
 
 readonly ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-readonly APP_NAME="KeyCadence"
+readonly APP_NAME="Keymit"
 readonly VERSION="${VERSION:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$ROOT_DIR/Info.plist")}"
 readonly BUILD_NUMBER="${BUILD_NUMBER:-$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$ROOT_DIR/Info.plist")}"
 readonly OUTPUT_DIR="${OUTPUT_DIR:-$ROOT_DIR/dist}"
 readonly OUTPUT_DMG="${OUTPUT_DMG:-$OUTPUT_DIR/$APP_NAME-$VERSION.dmg}"
 
-STAGING_DIR="$(mktemp -d "${TMPDIR:-/tmp}/keycadence-dmg.XXXXXX")"
+STAGING_DIR="$(mktemp -d "${TMPDIR:-/tmp}/keymit-dmg.XXXXXX")"
 cleanup() {
     rm -rf "$STAGING_DIR"
 }

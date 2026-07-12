@@ -35,9 +35,9 @@ jobs:
           VERSION: ${{ steps.package.outputs.version }}
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            "dist/KeyCadence-$VERSION.dmg" \
-            "dist/KeyCadence-$VERSION.dmg.sha256" \
+            "dist/Keymit-$VERSION.dmg" \
+            "dist/Keymit-$VERSION.dmg.sha256" \
             "INSTALL.md" \
             --verify-tag \
-            --title "KeyCadence $GITHUB_REF_NAME" \
+            --title "Keymit $GITHUB_REF_NAME" \
             --notes-file INSTALL.md

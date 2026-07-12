@@ -1,8 +1,8 @@
-# KeyCadence
+# Keymit
 
 [English](README.md) | **简体中文**
 
-KeyCadence 是一个隐私优先、数据仅存本机的 macOS 菜单栏应用。它按日期和应用统计
+Keymit 是一个隐私优先、数据仅存本机的 macOS 菜单栏应用。它按日期和应用统计
 打字次数，并展示年度热力图和每日应用分布，但不会记录你按下的具体按键或输入的文字。
 
 ## 产品范围
@@ -14,7 +14,7 @@ KeyCadence 是一个隐私优先、数据仅存本机的 macOS 菜单栏应用�
 - 带二次确认的本地统计清理
 - 获得辅助功能授权后自动开始统计；监听被 macOS 暂停时自动恢复
 
-KeyCadence 支持 macOS 13 及以上版本。全局按键计数需要辅助功能权限。事件监听为
+Keymit 支持 macOS 13 及以上版本。全局按键计数需要辅助功能权限。事件监听为
 只读模式，应用只会在本机 `UserDefaults` 中保存汇总次数和应用名称。
 
 ## 构建与测试
@@ -24,13 +24,13 @@ KeyCadence 支持 macOS 13 及以上版本。全局按键计数需要辅助功�
 ```bash
 swift test --disable-sandbox
 ./build.sh
-open KeyCadence.app
+open Keymit.app
 ```
 
 `build.sh` 默认生成经过校验、使用临时签名的 arm64 + x86_64 通用应用。模块缓存和
 中间产物均位于 `.build`，因此在受限环境和 CI 中也能稳定构建。
 
-首次启动后，请在 **系统设置 → 隐私与安全性 → 辅助功能** 中允许 KeyCadence。
+首次启动后，请在 **系统设置 → 隐私与安全性 → 辅助功能** 中允许 Keymit。
 应用会自动识别授权并开始统计，无需重启。
 
 由于 Release 使用 Ad Hoc 签名且未经过 Apple 公证，Gatekeeper 会阻止首次启动。
@@ -50,24 +50,22 @@ Release 流程和必须披露的限制见 [RELEASING.md](RELEASING.md)。
 
 ## 备份本地数据
 
-退出 KeyCadence 后运行：
+退出 Keymit 后运行：
 
 ```bash
 ./backup-data.sh
 ```
 
-脚本会生成一个私密的 `backups/KeyCadence-data-<时间戳>.tar.gz` 文件，其中包含
-当前偏好域，以及在三个历史 Bundle ID 下找到的旧数据。也可以把目标 `.tar.gz`
-路径作为第一个参数传入。
+脚本会生成一个私密的 `backups/Keymit-data-<时间戳>.tar.gz` 文件，其中包含当前
+偏好域。也可以把目标 `.tar.gz` 路径作为第一个参数传入。
 
-恢复前先退出 KeyCadence，然后运行：
+恢复前先退出 Keymit，然后运行：
 
 ```bash
-./restore-data.sh backups/KeyCadence-data-<时间戳>.tar.gz
+./restore-data.sh backups/Keymit-data-<时间戳>.tar.gz
 ```
 
 恢复脚本会在覆盖当前偏好前再次创建安全备份，导入后验证数据，失败时自动回滚。
-如果要迁移归档中的历史域，可以把对应 Bundle ID 作为第二个参数传入。
 
 ## 架构
 

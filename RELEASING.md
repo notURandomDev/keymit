@@ -1,6 +1,6 @@
-# Releasing KeyCadence
+# Releasing Keymit
 
-KeyCadence is distributed from GitHub as an ad-hoc signed universal macOS app.
+Keymit is distributed from GitHub as an ad-hoc signed universal macOS app.
 The maintainer does not have an Apple Developer account, so releases cannot use
 a Developer ID certificate or Apple notarization.
 
@@ -9,7 +9,7 @@ a Developer ID certificate or Apple notarization.
 - The ad-hoc signature seals the app bundle and is verified during packaging,
   but it does not establish the publisher's identity with Apple.
 - Gatekeeper will block the first normal launch after the app is downloaded.
-- Users must explicitly approve KeyCadence in System Settings before opening it.
+- Users must explicitly approve Keymit in System Settings before opening it.
 - Every release includes a SHA-256 file so users can verify the download against
   the checksum published on GitHub.
 
@@ -30,13 +30,13 @@ describe an ad-hoc build as Developer ID signed, notarized, or verified by Apple
 4. Confirm that the script passes the tests, builds both arm64 and x86_64,
    verifies the ad-hoc app signature and DMG, and creates:
 
-   - `dist/KeyCadence-<version>.dmg`
-   - `dist/KeyCadence-<version>.dmg.sha256`
+   - `dist/Keymit-<version>.dmg`
+   - `dist/Keymit-<version>.dmg.sha256`
 
 5. Verify the checksum locally, then create and push tag `v<version>`:
 
    ```bash
-   shasum -a 256 -c dist/KeyCadence-1.0.0.dmg.sha256
+   shasum -a 256 -c dist/Keymit-1.0.0.dmg.sha256
    ```
 
 6. Pushing the tag triggers `.github/workflows/release.yml`. It rebuilds and

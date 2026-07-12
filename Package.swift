@@ -3,20 +3,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "KeyCadence",
+    name: "Keymit",
     platforms: [.macOS(.v13)],
     products: [
-        .library(name: "KeyCadenceCore", targets: ["KeyCadenceCore"])
+        .library(name: "KeymitCore", targets: ["KeymitCore"])
     ],
     targets: [
         .target(
-            name: "KeyCadenceCore",
+            name: "KeymitCore",
             path: "Sources/Core"
         ),
         .testTarget(
-            name: "KeyCadenceCoreTests",
-            dependencies: ["KeyCadenceCore"],
-            path: "Tests/KeyCadenceCoreTests"
+            name: "KeymitCoreTests",
+            dependencies: ["KeymitCore"],
+            path: "Tests/KeymitCoreTests"
         )
     ]
 )

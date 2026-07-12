@@ -5,7 +5,7 @@ set -Eeuo pipefail
 trap 'status=$?; echo "error: build.sh failed at line $LINENO (status $status)" >&2; exit $status' ERR
 
 readonly ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-readonly APP_NAME="KeyCadence"
+readonly APP_NAME="Keymit"
 readonly OUTPUT_APP="${OUTPUT_APP:-$ROOT_DIR/$APP_NAME.app}"
 readonly BUILD_DIR="$ROOT_DIR/.build/app"
 readonly BUNDLE_DIR="$BUILD_DIR/$APP_NAME.app"

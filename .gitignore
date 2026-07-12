@@ -8,7 +8,7 @@ Icon?
 .Trashes
 
 # Build outputs
-KeyCadence.app/
+Keymit.app/
 *.dmg
 build/
 dist/

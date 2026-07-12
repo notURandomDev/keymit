@@ -33,10 +33,10 @@
 "launch_at_login_error_title" = "无法更新登录项设置";
 "action_ok" = "好";
 "tracking_inactive_title" = "按键统计尚未启用";
-"tracking_inactive_message" = "请在辅助功能设置中允许 KeyCadence，之后会自动开始统计。";
+"tracking_inactive_message" = "请在辅助功能设置中允许 Keymit，之后会自动开始统计。";
 "action_fix_permission" = "去设置";
 "unknown_application" = "未知应用";
-"privacy_summary" = "KeyCadence 仅在本机保存次数和应用名称，绝不会保存你按下的按键或输入的文字。";
+"privacy_summary" = "Keymit 仅在本机保存次数和应用名称，绝不会保存你按下的按键或输入的文字。";
 "heatmap_day_help" = "%@：%d 次按键";
 
 "label_activity" = "活跃度";

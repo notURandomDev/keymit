@@ -1,7 +1,8 @@
 import AppKit
 import ApplicationServices
 import SwiftUI
-
+// MARK: - File Description
+// Tracks global keystrokes, aggregates per-app statistics, and manages local persistence.
 enum TrackingState: Equatable {
     case active
     case permissionRequired
@@ -324,7 +325,7 @@ final class KeyTracker: ObservableObject {
             dirty = false
             saveCounter = 0
         } catch {
-            NSLog("KeyCadence failed to save statistics: %@", error.localizedDescription)
+            NSLog("Keymit failed to save statistics: %@", error.localizedDescription)
         }
     }
 
