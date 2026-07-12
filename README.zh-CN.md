@@ -60,6 +60,15 @@ Release 流程和必须披露的限制见 [RELEASING.md](RELEASING.md)。
 当前偏好域，以及在三个历史 Bundle ID 下找到的旧数据。也可以把目标 `.tar.gz`
 路径作为第一个参数传入。
 
+恢复前先退出 KeyCadence，然后运行：
+
+```bash
+./restore-data.sh backups/KeyCadence-data-<时间戳>.tar.gz
+```
+
+恢复脚本会在覆盖当前偏好前再次创建安全备份，导入后验证数据，失败时自动回滚。
+如果要迁移归档中的历史域，可以把对应 Bundle ID 作为第二个参数传入。
+
 ## 架构
 
 - `Sources/Core/StatisticsStore.swift`：确定性的统计状态与数据约束，带单元测试
