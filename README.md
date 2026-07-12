@@ -67,6 +67,17 @@ file. It includes the current preferences domain and any data found under the
 three historical bundle identifiers. Pass a `.tar.gz` path as the first
 argument to choose another destination.
 
+To restore a backup, quit KeyCadence and run:
+
+```bash
+./restore-data.sh backups/KeyCadence-data-<timestamp>.tar.gz
+```
+
+The restore script creates another safety backup before overwriting the current
+preferences, verifies the imported data, and rolls back automatically on
+failure. To migrate an archived legacy domain, pass its bundle identifier as a
+second argument.
+
 ## Architecture
 
 - `Sources/Core/StatisticsStore.swift`: deterministic statistics state and
