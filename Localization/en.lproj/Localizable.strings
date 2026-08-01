@@ -20,6 +20,7 @@
 "picker_number_display" = "Number display";
 "number_display_full" = "Full";
 "number_display_compact" = "Compact";
+"desc_number_display" = "Full shows the exact count (for example, 4242). Compact keeps counts under 1,000 exact and shortens larger counts (4242 becomes 4K).";
 "alert_restart_title" = "Restart required";
 "alert_restart_message" = "To apply language changes everywhere, please restart the app.";
 "restart_now" = "Restart Now";

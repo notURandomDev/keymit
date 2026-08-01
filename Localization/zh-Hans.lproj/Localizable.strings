@@ -20,6 +20,7 @@
 "picker_number_display" = "数字显示";
 "number_display_full" = "完整";
 "number_display_compact" = "精简";
+"desc_number_display" = "完整模式显示具体数字（例如 4242）；精简模式在 1000 以下显示原数，较大数字会缩写（4242 显示为 4K）。";
 "alert_restart_title" = "需要重启应用";
 "alert_restart_message" = "要让语言改动在所有页面生效，请重启应用。";
 "restart_now" = "立即重启";

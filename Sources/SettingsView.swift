@@ -30,6 +30,9 @@ struct SettingsView: View {
                     Text(LocalizedStringKey("number_display_compact"))
                         .tag(MenuBarNumberDisplayMode.compact)
                 }
+                Text(LocalizedStringKey("desc_number_display"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 Toggle(
                     LocalizedStringKey("toggle_launch_at_login"),
                     isOn: Binding(
