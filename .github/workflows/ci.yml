@@ -21,3 +21,5 @@ jobs:
         run: swift test --disable-sandbox
       - name: Build universal app
         run: ./build.sh
+      - name: Verify isolated debug app
+        run: ./Tests/verify-debug-bundle.sh

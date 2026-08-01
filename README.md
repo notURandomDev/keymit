@@ -34,9 +34,34 @@ open Keymit.app
 signature by default. Its module cache and intermediate output stay under
 `.build`, making the build reproducible in restricted and CI environments.
 
-After launch, allow Keymit in **System Settings → Privacy & Security →
-Accessibility**. The app detects the authorization and starts tracking without a
-restart.
+For day-to-day development, use the isolated debug app instead:
+
+```bash
+./build.sh --profile debug
+open "Keymit Debug.app"
+```
+
+The debug app uses the separate bundle identifier `com.notURandomDev.Keymit.debug`
+and the display name **Keymit Debug**. It can stay installed alongside the release
+app and has its own Accessibility permission entry and preferences domain. The
+debug build is single-architecture, unoptimized, and ad-hoc signed for faster
+iteration; use `./build.sh` for release validation. `build-dev.sh` remains as a
+convenience wrapper for the same debug profile.
+
+### VS Code shortcut builds
+
+The repository includes the version-controlled `.vscode/tasks.json` task
+configuration. Open the repository in VS Code, then use:
+
+- `⌘⇧B` to run the default **Keymit: Build Debug** task.
+- `⌘⇧P` opens the Command Palette; choose **Tasks: Run Task** → **Keymit: Build Release** for a release build.
+
+The default shortcut intentionally builds the isolated Debug app. Release builds
+must be selected explicitly.
+
+After launching the release app, allow **Keymit** in **System Settings → Privacy &
+Security → Accessibility**. For the development app, allow **Keymit Debug** instead.
+The app detects the authorization and starts tracking without a restart.
 
 Because releases are ad-hoc signed and not notarized, the first launch is
 blocked by Gatekeeper. Follow [INSTALL.md](INSTALL.md) to approve the app in

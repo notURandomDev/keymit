@@ -30,8 +30,30 @@ open Keymit.app
 `build.sh` 默认生成经过校验、使用临时签名的 arm64 + x86_64 通用应用。模块缓存和
 中间产物均位于 `.build`，因此在受限环境和 CI 中也能稳定构建。
 
-首次启动后，请在 **系统设置 → 隐私与安全性 → 辅助功能** 中允许 Keymit。
-应用会自动识别授权并开始统计，无需重启。
+日常开发时可以使用隔离的 Debug 版本：
+
+```bash
+./build.sh --profile debug
+open "Keymit Debug.app"
+```
+
+Debug 版本使用独立的 bundle identifier
+`com.notURandomDev.Keymit.debug`，显示名称为 **Keymit Debug**。它可以与发布版
+同时安装，并在 Accessibility 中拥有单独的权限条目和偏好数据域。Debug 构建只编译
+当前架构、关闭优化，并使用临时签名以缩短迭代时间；发布验证仍使用 `build.sh`。
+`build-dev.sh` 仍然保留为同一 Debug profile 的便捷包装。
+
+### 在 VS Code 中用快捷键构建
+
+仓库已经将 `.vscode/tasks.json` 纳入版本控制。用 VS Code 打开仓库后：
+
+- 按 `⌘⇧B`，执行默认的 **Keymit: Build Debug** 任务。
+- 按 `⌘⇧P` 打开命令面板，选择 **Tasks: Run Task** → **Keymit: Build Release**，执行发布构建。
+
+默认快捷键会构建隔离的 Debug 版本；Release 构建需要在任务面板中显式选择。
+
+首次启动发布版后，请在 **系统设置 → 隐私与安全性 → 辅助功能** 中允许
+**Keymit**；开发版则允许 **Keymit Debug**。应用会自动识别授权并开始统计，无需重启。
 
 由于 Release 使用 Ad Hoc 签名且未经过 Apple 公证，Gatekeeper 会阻止首次启动。
 请按照 [INSTALL.md](INSTALL.md) 在系统设置中允许打开，并先核对 Release 页面公布的
