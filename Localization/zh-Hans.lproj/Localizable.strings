@@ -17,6 +17,9 @@
 "lang_system" = "跟随系统";
 "lang_en" = "英语";
 "lang_zh_hans" = "中文（简体）";
+"picker_number_display" = "数字显示";
+"number_display_full" = "完整";
+"number_display_compact" = "精简";
 "alert_restart_title" = "需要重启应用";
 "alert_restart_message" = "要让语言改动在所有页面生效，请重启应用。";
 "restart_now" = "立即重启";

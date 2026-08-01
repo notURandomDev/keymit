@@ -21,8 +21,12 @@ struct KeymitApp: App {
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "keyboard")
-                // Realtime keystroke count in menu bar
-                Text("\(tracker.todayKeystrokes)")
+                Text(
+                    MenuBarCountFormatter.string(
+                        for: tracker.todayKeystrokes,
+                        mode: prefs.menuBarNumberDisplayMode
+                    )
+                )
                     .font(.monospacedDigit(.body)())
             }
         }

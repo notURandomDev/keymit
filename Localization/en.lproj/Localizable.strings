@@ -17,6 +17,9 @@
 "lang_system" = "System";
 "lang_en" = "English";
 "lang_zh_hans" = "Chinese (Simplified)";
+"picker_number_display" = "Number display";
+"number_display_full" = "Full";
+"number_display_compact" = "Compact";
 "alert_restart_title" = "Restart required";
 "alert_restart_message" = "To apply language changes everywhere, please restart the app.";
 "restart_now" = "Restart Now";

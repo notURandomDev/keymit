@@ -25,12 +25,22 @@ final class AppPreferences: ObservableObject {
     @Published var decrementOnBackspace: Bool {
         didSet { UserDefaults.standard.set(decrementOnBackspace, forKey: "decrementOnBackspace") }
     }
+    @Published var menuBarNumberDisplayMode: MenuBarNumberDisplayMode {
+        didSet {
+            UserDefaults.standard.set(
+                menuBarNumberDisplayMode.rawValue,
+                forKey: "menuBarNumberDisplayMode"
+            )
+        }
+    }
     @Published private(set) var launchAtLogin: Bool
 
     init() {
         let storedLanguage = UserDefaults.standard.string(forKey: "appLanguage") ?? "_system"
         language = Self.supportedLanguages.contains(storedLanguage) ? storedLanguage : "_system"
         decrementOnBackspace = UserDefaults.standard.object(forKey: "decrementOnBackspace") as? Bool ?? false
+        let storedDisplayMode = UserDefaults.standard.string(forKey: "menuBarNumberDisplayMode")
+        menuBarNumberDisplayMode = MenuBarNumberDisplayMode(rawValue: storedDisplayMode ?? "") ?? .full
         launchAtLogin = LaunchManager.isLaunchAtLoginEnabled()
     }
 

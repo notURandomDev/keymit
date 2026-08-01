@@ -9,11 +9,15 @@ Icon?
 
 # Build outputs
 Keymit.app/
+Keymit Debug.app/
 *.dmg
 build/
 dist/
 out/
 backups/
+
+# Agent-generated implementation plans
+docs/superpowers/plans/
 
 # Swift / Xcode / SwiftPM
 .build/
@@ -24,6 +28,8 @@ DerivedData/
 
 # Editors / IDE
 .vscode/
+!.vscode/
+!.vscode/tasks.json
 .idea/
 .trae/
 *.code-workspace
