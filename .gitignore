@@ -35,3 +35,8 @@ DerivedData/
 
 # Sandbox-generated app icon in repo root
 /AppIcon.icns
+
+# Website (Astro)
+website/node_modules/
+website/dist/
+website/.astro/

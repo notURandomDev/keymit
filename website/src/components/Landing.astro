@@ -1,0 +1,466 @@
+---
+import type { Dict } from '../i18n';
+
+interface Props {
+  t: Dict;
+}
+
+const { t } = Astro.props;
+
+const RELEASES_URL = 'https://github.com/notURandomDev/keymit/releases';
+const REPO_URL = 'https://github.com/notURandomDev/keymit';
+const SHA256 =
+  'afe6af17e24b6560c4f3ea42fe6f643340cf88e5ac434d7314e65e4dd0dc29dd';
+
+// 演示用热力图数据：确定性伪随机，52 周 x 7 天，5 个等级。
+const WEEKS = 52;
+const DAYS = 7;
+let seed = 20260101;
+const rand = () => {
+  seed = (seed * 9301 + 49297) % 233280;
+  return seed / 233280;
+};
+const cells = Array.from({ length: WEEKS * DAYS }, () => {
+  const r = rand();
+  if (r < 0.32) return 0;
+  if (r < 0.58) return 1;
+  if (r < 0.78) return 2;
+  if (r < 0.92) return 3;
+  return 4;
+});
+---
+
+<section class="hero">
+  <img class="hero-icon" src="/keymit-icon.png" alt="Keymit app icon" width="128" height="128" />
+  <h1>{t.hero.tagline}</h1>
+  <p class="hero-sub">{t.hero.subtitle}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href={RELEASES_URL} target="_blank" rel="noopener">
+      {t.hero.download}
+    </a>
+    <a class="btn btn-secondary" href={REPO_URL} target="_blank" rel="noopener">
+      {t.hero.source}
+    </a>
+  </div>
+  <p class="hero-req">{t.hero.requirement}</p>
+</section>
+
+<section class="section section-alt" id="features">
+  <div class="section-inner">
+    <h2>{t.features.heading}</h2>
+    <p class="section-sub">{t.features.sub}</p>
+    <div class="feature-grid">
+      {
+        t.features.items.map((f) => (
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">{f.icon}</div>
+            <h3>{f.title}</h3>
+            <p>{f.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" id="privacy">
+  <div class="section-inner">
+    <h2>{t.privacy.heading}</h2>
+    <p class="section-sub">{t.privacy.sub}</p>
+    <div class="privacy-grid">
+      {
+        t.privacy.points.map((p) => (
+          <div class="privacy-item">
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="heatmap">
+  <div class="section-inner">
+    <h2>{t.heatmap.heading}</h2>
+    <p class="section-sub">{t.heatmap.sub}</p>
+    <div class="heatmap-wrap">
+      <div class="heatmap" role="img" aria-label="activity heatmap demo">
+        {cells.map((level) => <span class={`hm hm-${level}`} />)}
+      </div>
+      <div class="heatmap-legend">
+        <span>{t.heatmap.less}</span>
+        <span class="hm hm-0"></span>
+        <span class="hm hm-1"></span>
+        <span class="hm hm-2"></span>
+        <span class="hm hm-3"></span>
+        <span class="hm hm-4"></span>
+        <span>{t.heatmap.more}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="install">
+  <div class="section-inner section-narrow">
+    <h2>{t.install.heading}</h2>
+    <p class="section-sub">{t.install.sub}</p>
+    <ol class="steps">
+      {t.install.steps.map((s) => <li>{s}</li>)}
+    </ol>
+    <div class="warning">
+      <strong>⚠️</strong>
+      <p>{t.install.warning}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="download">
+  <div class="section-inner section-narrow">
+    <h2>{t.download.heading}</h2>
+    <dl class="meta">
+      <div>
+        <dt>{t.download.versionLabel}</dt>
+        <dd>v1.0.0</dd>
+      </div>
+      <div>
+        <dt>{t.download.platformLabel}</dt>
+        <dd>{t.download.platform}</dd>
+      </div>
+      <div>
+        <dt>{t.download.shaLabel}</dt>
+        <dd><code class="sha">{SHA256}</code></dd>
+      </div>
+    </dl>
+    <p class="verify-label">{t.download.verifyLabel}</p>
+    <pre class="verify-cmd"><code>{t.download.verifyCmd}</code></pre>
+    <div class="download-action">
+      <a class="btn btn-primary" href={RELEASES_URL} target="_blank" rel="noopener">
+        {t.download.button}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 96px 24px 80px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-icon {
+    margin: 0 auto 32px;
+    width: 128px;
+    height: 128px;
+    border-radius: 28px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 19px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    margin-top: 36px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .hero-req {
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 600;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(52, 209, 107, 0.35);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--hairline);
+    color: var(--text);
+    background: #fff;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  /* ---------- Sections ---------- */
+  .section-alt {
+    background: var(--bg-alt);
+  }
+
+  .section-narrow {
+    max-width: 760px;
+  }
+
+  /* ---------- Features ---------- */
+  .feature-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+
+  .section-alt .feature-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Privacy ---------- */
+  .privacy-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  .privacy-item {
+    border-top: 3px solid var(--accent);
+    padding-top: 20px;
+  }
+
+  .privacy-item h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .privacy-item p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Heatmap ---------- */
+  .heatmap-wrap {
+    margin-top: 48px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 32px;
+    overflow-x: auto;
+  }
+
+  .heatmap {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 3px;
+    min-width: 640px;
+  }
+
+  .hm {
+    aspect-ratio: 1;
+    border-radius: 2.5px;
+  }
+
+  .hm-0 { background: #ebedf0; }
+  .hm-1 { background: #c4efd2; }
+  .hm-2 { background: #8ee3ab; }
+  .hm-3 { background: #34d16b; }
+  .hm-4 { background: #1fa855; }
+
+  .heatmap-legend {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .heatmap-legend .hm {
+    width: 11px;
+    height: 11px;
+  }
+
+  /* ---------- Install ---------- */
+  .steps {
+    margin-top: 48px;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 18px 0 18px 64px;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 16px;
+  }
+
+  .steps li:last-child {
+    border-bottom: none;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .warning {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #fff8e6;
+    border: 1px solid #f0dfa8;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    font-size: 15px;
+    color: #6b5b1e;
+  }
+
+  /* ---------- Download ---------- */
+  .meta {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .meta > div {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .meta dt {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .meta dd {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .sha {
+    font-size: 13.5px;
+    word-break: break-all;
+    background: #eef0f2;
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: inline-block;
+    line-height: 1.7;
+  }
+
+  .verify-label {
+    margin-top: 32px;
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  .verify-cmd {
+    margin-top: 10px;
+    background: #1d1d1f;
+    color: #b8f0cd;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  .download-action {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 800px) {
+    .feature-grid,
+    .privacy-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section {
+      padding: 64px 20px;
+    }
+
+    .hero {
+      padding: 64px 20px 56px;
+    }
+
+    .privacy-grid {
+      gap: 28px;
+    }
+  }
+</style>
