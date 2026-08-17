@@ -1,0 +1,18 @@
+website/src/app/globals.css
+  h_27814571c56277 23,53,466-469
+website/src/components/SiteFrame.tsx
+  h_27814571c56277 24-28
+website/src/i18n.ts
+  h_27814571c56277 10-16,121,123,125-131,137,139,141-142,146,151,156,161,166,171,176,185-186,190,194,200,206,212,215,223
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a1b45b8fb2f8a813fd4f361c9678f203c0111fe3",
+  "prompts": {},
+  "humans": {
+    "h_27814571c56277": {
+      "author": "notURandomDev <1250901577@qq.com>"
+    }
+  }
+}
