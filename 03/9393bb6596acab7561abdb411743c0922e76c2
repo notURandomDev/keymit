@@ -1,0 +1,19 @@
+AGENTS.md
+  s_4f88529532c9bc::t_d582b158acbb74 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "039393bb6596acab7561abdb411743c0922e76c2",
+  "prompts": {},
+  "sessions": {
+    "s_4f88529532c9bc": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a00e15-cc9b-73f0-9595-f2bc3ee2df71",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "notURandomDev <1250901577@qq.com>"
+    }
+  }
+}
