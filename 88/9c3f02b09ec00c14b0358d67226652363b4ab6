@@ -1,0 +1,34 @@
+website/src/i18n.ts
+  h_b7a9a7fe09078f 1-220
+.gitignore
+  h_b7a9a7fe09078f 38-42
+website/astro.config.mjs
+  h_b7a9a7fe09078f 1-11
+website/package.json
+  h_b7a9a7fe09078f 1-14
+website/pnpm-lock.yaml
+  h_b7a9a7fe09078f 1-3457
+website/pnpm-workspace.yaml
+  h_b7a9a7fe09078f 1-6
+website/src/components/Landing.astro
+  h_b7a9a7fe09078f 1-466
+website/src/layouts/Layout.astro
+  h_b7a9a7fe09078f 1-205
+website/src/pages/en/index.astro
+  h_b7a9a7fe09078f 1-9
+website/src/pages/index.astro
+  h_b7a9a7fe09078f 1-9
+website/tsconfig.json
+  h_b7a9a7fe09078f 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "889c3f02b09ec00c14b0358d67226652363b4ab6",
+  "prompts": {},
+  "humans": {
+    "h_b7a9a7fe09078f": {
+      "author": "Kyle Huang <huangziye.dev@bytedance.com>"
+    }
+  }
+}
