@@ -7,6 +7,13 @@ const zh = {
   description:
     "Keymit 是一款隐私优先的 macOS 菜单栏应用，按天、按应用统计键盘敲击次数，数据只保存在本机。",
   nav: {
+    links: [
+      { label: "功能", href: "/#features" },
+      { label: "隐私", href: "/#privacy" },
+      { label: "热力图", href: "/#heatmap" },
+      { label: "安装", href: "/#install" },
+      { label: "下载", href: "/#download" },
+    ],
     github: "GitHub",
     switch: "EN",
     switchHref: "/en/",
@@ -111,55 +118,62 @@ const zh = {
 const en: typeof zh = {
   lang: "en",
   htmlLang: "en",
-  title: "Keymit — Privacy-first Keystroke Counter",
+  title: "Keymit — Privacy-first Keystroke Counter for macOS",
   description:
-    "Keymit is a privacy-first macOS menu bar app that counts your keystrokes per day and per app. All data stays on your Mac.",
+    "Keymit is a privacy-first menu bar app for macOS that counts your keystrokes by day and by app. Everything stays on your Mac.",
   nav: {
+    links: [
+      { label: "Features", href: "/en/#features" },
+      { label: "Privacy", href: "/en/#privacy" },
+      { label: "Heatmap", href: "/en/#heatmap" },
+      { label: "Install", href: "/en/#install" },
+      { label: "Download", href: "/en/#download" },
+    ],
     github: "GitHub",
     switch: "中文",
     switchHref: "/",
   },
   hero: {
-    tagline: "Your keyboard. Only you know.",
+    tagline: "Your keyboard. Your business.",
     subtitle:
-      "Keymit is a privacy-first macOS menu bar app that counts your keystrokes per day and per app, and renders your typing rhythm as a yearly heatmap. All data stays on your Mac.",
+      "Keymit is a privacy-first menu bar app for macOS that counts your keystrokes by day and by app, and turns your typing rhythm into a yearly heatmap. Everything stays on your Mac.",
     download: "Download for macOS",
-    source: "View Source",
-    requirement: "Requires macOS 13 or later · Current version v1.0.0",
+    source: "View on GitHub",
+    requirement: "Requires macOS 13 or later · v1.0.0",
   },
   features: {
     heading: "Features",
-    sub: "Does one thing, and does it well.",
+    sub: "One thing, done well.",
     items: [
       {
         icon: "⌨️",
         title: "Daily Keystroke Totals",
-        desc: "See today’s keystroke count right in the menu bar, accumulated day by day.",
+        desc: "See today’s keystroke count at a glance in the menu bar, building up day by day.",
       },
       {
         icon: "🗓️",
         title: "Yearly Activity Heatmap",
-        desc: "Review a whole year of typing rhythm in a GitHub-style contribution heatmap.",
+        desc: "Look back on a full year of typing in a GitHub-style contribution heatmap — your most productive days stand out instantly.",
       },
       {
         icon: "🧩",
         title: "Per-App Breakdown",
-        desc: "See which apps your keyboard time goes to, with a daily breakdown per app.",
+        desc: "Find out which apps get most of your keyboard time, with a daily breakdown for each.",
       },
       {
         icon: "⌫",
         title: "Backspace Deduction",
-        desc: "Optional: pressing Backspace subtracts one from the count, keeping totals consistent with daily data.",
+        desc: "Optional: subtract one keystroke every time you hit Backspace, so lifetime and daily totals stay in sync.",
       },
       {
         icon: "🔁",
         title: "Automatic Recovery",
-        desc: "Keymit resumes listening automatically after Accessibility permission is granted, or after macOS disables the event tap.",
+        desc: "Keymit resumes listening automatically once Accessibility access is granted — or if macOS ever disables the event tap.",
       },
       {
         icon: "🌐",
         title: "Bilingual UI",
-        desc: "Interface in Simplified Chinese and English, with optional launch at login and a confirmed reset of local data.",
+        desc: "English and Simplified Chinese UI, optional launch at login, and a confirmed reset of local data.",
       },
     ],
   },
@@ -168,37 +182,37 @@ const en: typeof zh = {
     sub: "It listens. It never reads.",
     points: [
       {
-        title: "No key content recorded",
-        desc: "Keymit’s event tap is listen-only: it counts “one keystroke” and never records which key you pressed or what you typed.",
+        title: "Nothing you type is recorded",
+        desc: "Keymit’s event tap is listen-only: it registers “one keystroke” and never knows which key you pressed or what you typed.",
       },
       {
         title: "Data never leaves your Mac",
-        desc: "Only aggregate counts and app names, stored locally in UserDefaults. No account, no uploads, no analytics SDKs.",
+        desc: "Only aggregate counts and app names, stored locally in UserDefaults. No accounts, no uploads, no analytics.",
       },
       {
         title: "Erase anytime",
-        desc: "Reset all local data in the app after a confirmation. You stay in control.",
+        desc: "Wipe all local data from within the app after a confirmation. You’re in control.",
       },
     ],
   },
   heatmap: {
     heading: "A year of typing at a glance",
-    sub: "Demo data — the heatmap in the app is generated from your real keystrokes.",
+    sub: "Demo data — in the app, the heatmap is drawn from your real keystrokes.",
     less: "Less",
     more: "More",
   },
   install: {
     heading: "Installation",
-    sub: "Keymit is ad-hoc signed and not notarized, so the first launch needs one manual confirmation.",
+    sub: "Keymit is ad-hoc signed and not notarized by Apple, so the first launch takes one extra manual step.",
     steps: [
       "Download the DMG from GitHub Releases, open it, and drag Keymit into Applications.",
       'The first launch is blocked by Gatekeeper with a "cannot be opened" warning — this is expected.',
       'Go to System Settings → Privacy & Security → Security, and click "Open Anyway".',
       "Then allow Keymit under System Settings → Privacy & Security → Accessibility.",
-      "The Keymit icon appears in the menu bar and counting begins.",
+      "Keymit appears in the menu bar and starts counting.",
     ],
     warning:
-      "Only bypass Gatekeeper when the DMG comes from the official GitHub Release and its SHA-256 matches the checksum below.",
+      "Only bypass Gatekeeper if the DMG came from the official GitHub Release and its SHA-256 matches the checksum below.",
   },
   download: {
     heading: "Download",
@@ -206,7 +220,7 @@ const en: typeof zh = {
     platformLabel: "Platform",
     platform: "macOS 13+ (Apple Silicon / Intel)",
     shaLabel: "SHA-256",
-    verifyLabel: "Verify after downloading in Terminal:",
+    verifyLabel: "Verify the download in Terminal:",
     verifyCmd: "shasum -a 256 Keymit-1.0.0.dmg",
     button: "Download from GitHub Releases",
   },

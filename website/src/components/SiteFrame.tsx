@@ -21,6 +21,11 @@ export default function SiteFrame({
             <span>Keymit</span>
           </a>
           <nav className="nav-links">
+            {t.nav.links.map((l) => (
+              <a className="nav-link-section" href={l.href} key={l.href}>
+                {l.label}
+              </a>
+            ))}
             <a href={REPO_URL} target="_blank" rel="noopener">
               {t.nav.github}
             </a>
